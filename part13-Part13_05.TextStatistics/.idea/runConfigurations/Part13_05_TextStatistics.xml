@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Part13_05.TextStatistics" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="textstatistics.TextStatisticsApplication" />
+    <module name="Part13_05.TextStatistics" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
