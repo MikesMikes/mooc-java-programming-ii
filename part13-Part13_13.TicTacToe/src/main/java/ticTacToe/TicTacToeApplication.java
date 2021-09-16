@@ -16,19 +16,19 @@ public class TicTacToeApplication extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         //high level layout
+        int player = 1;
         BorderPane layout = new BorderPane();
-        GridView grid= new GridView();
+        GridView grid= new GridView(player);
 
         //Elements
-        Label turn = new Label("Turn:");
+        Label turn = new Label("Turn:" + (player % 2));
 
         //Layout collect
         layout.setTop(turn);
         layout.setCenter(grid.getView());
         
-
         //Scene
-        Scene scene = new Scene(layout, 400, 300);
+        Scene scene = new Scene(layout);
 
         stage.setScene(scene);
         stage.show();
