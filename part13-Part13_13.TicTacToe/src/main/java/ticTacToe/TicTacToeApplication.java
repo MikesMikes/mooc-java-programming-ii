@@ -18,11 +18,12 @@ public class TicTacToeApplication extends Application {
         //high level layout
         int player = 1;
         BorderPane layout = new BorderPane();
-        GridView grid= new GridView(player);
+        Label turn = new Label("Turn: X");
 
+        GridView grid= new GridView(player, turn);
+        
         //Elements
-        Label turn = new Label("Turn:" + (player % 2));
-
+        
         //Layout collect
         layout.setTop(turn);
         layout.setCenter(grid.getView());
