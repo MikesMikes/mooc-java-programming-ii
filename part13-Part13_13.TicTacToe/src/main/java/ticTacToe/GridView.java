@@ -6,9 +6,7 @@
 package ticTacToe;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -21,13 +19,13 @@ import javafx.scene.text.Font;
  */
 public class GridView {
 
-    private Button[] buttons;
+    private Button[][] buttons;
     private int player;
     private Label turn;
     private boolean finished;
 
     public GridView(int player, Label label) {
-        buttons = new Button[9];
+        buttons = new Button[3][3];
         this.player = player;
         this.turn = label;
         finished = false;
@@ -35,8 +33,10 @@ public class GridView {
     }
 
     public void init() {
-        for (int i = 0; i < 9; i++) {
-            buttons[i] = createButton(i);
+        for (int i = 0; i < buttons[0].length; i++) {
+            for (int j = 0; j < buttons[0].length; j++) {
+                buttons[i][j] = createButton();
+            }
         }
     }
 
@@ -47,26 +47,26 @@ public class GridView {
          */
         GridPane layout = new GridPane();
 
-        layout.add(buttons[0], 0, 0);
-        layout.add(buttons[1], 0, 1);
-        layout.add(buttons[2], 0, 2);
-        layout.add(buttons[3], 1, 0);
-        layout.add(buttons[4], 1, 1);
-        layout.add(buttons[5], 1, 2);
-        layout.add(buttons[6], 2, 0);
-        layout.add(buttons[7], 2, 1);
-        layout.add(buttons[8], 2, 2);
+        layout.add(buttons[0][0], 0, 0);
+        layout.add(buttons[0][1], 0, 1);
+        layout.add(buttons[0][2], 0, 2);
+        layout.add(buttons[1][0], 1, 0);
+        layout.add(buttons[1][1], 1, 1);
+        layout.add(buttons[1][2], 1, 2);
+        layout.add(buttons[2][0], 2, 0);
+        layout.add(buttons[2][1], 2, 1);
+        layout.add(buttons[2][2], 2, 2);
 
         return layout;
     }
 
-    public Button createButton(int i) {
+    public Button createButton() {
         Button button = new Button(" ");
         button.setFont(Font.font("Monospaced", 40));
 
         button.setOnMouseClicked((event) -> {
 
-            if (button.getText().equals(" ")) {
+            if (button.getText().equals(" ") && !finished) {
                 if (player % 2 == 0) {
                     button.setText("O");
                 } else {
@@ -74,8 +74,12 @@ public class GridView {
                 }
                 System.out.println("player: " + player);
                 this.getState();
-                this.player++;
-                turn.setText("Turn: " + this.getPlayer());
+                if (finished) {
+                    turn.setText("The end!");
+                } else {
+                    this.player++;
+                    turn.setText("Turn: " + this.getPlayer());
+                }
             }
         });
 
@@ -89,63 +93,80 @@ public class GridView {
         return "X";
     }
 
-    public Button[] getButtons() {
-        return this.buttons;
-    }
-
     public boolean getState() {
-        String[][] array = new String[3][3];
-        int index = 0;
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-//                if (array[i][j] == null) {
-//                    array[i][j] = " ";
-//                }
-                array[i][j] = buttons[index].getText();
-                System.out.println(Arrays.deepToString(array));
-                index++;
-            }
-        }
-        if (this.hasVerticalLine(array) || this.hasHorizontalLine(array) || this.hasDiagonalLine(array)) {
+        if (hasVerticalLine() || hasHorizontalLine() || hasBackwardSlash() || hasForwardSlash()) {
             this.finished = true;
+            System.out.println("Finished? " + finished);
+            return true;
         }
         return false;
     }
-    
+
     /**
      * Add 3 vertical nodes to a list and check if all the same
+     *
      * @param String[3][3]
      * @return boolean if there's a line
      */
-    private boolean hasVerticalLine(String[][] array) {
-        ArrayList<String> line = new ArrayList<>(); 
+    private boolean hasVerticalLine() {
+        ArrayList<String> line = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                line.add(array[i][j]);
+                line.add(buttons[i][j].getText());
             }
             if (hasLine(line)) {
-                System.out.println("has Line! " + line.get(i));
+                System.out.println("has vertical Line! " + line.get(i));
+                return true;
             }
             line.clear();
         }
         return false;
     }
 
-    private boolean hasHorizontalLine(String[][] array) {
-
+    private boolean hasHorizontalLine() {
+        ArrayList<String> line = new ArrayList<>();
+        for (int i = 0; i < buttons[0].length; i++) {
+            for (int j = 0; j < buttons[0].length; j++) {
+                line.add(buttons[j][i].getText());
+            }
+            if (hasLine(line)) {
+                System.out.println("has Horizontal line!" + line.get(i));
+                return true;
+            }
+            line.clear();
+        }
         return false;
     }
 
-    private boolean hasDiagonalLine(String[][] array) {
+    private boolean hasBackwardSlash() {
+        ArrayList<String> line = new ArrayList<>();
+        for (int j = 0; j < buttons[0].length; j++) {
+            line.add(buttons[j][j].getText());
+        }
+        if (hasLine(line)) {
+            System.out.println("Has backward diagonal line!" + line.get(0));
+            return true;
+        }
+        return false;
+    }
 
+    private boolean hasForwardSlash() {
+        ArrayList<String> line = new ArrayList<>();
+        for (int i = 0, j = buttons[0].length - 1; i < buttons[0].length; i++, j--) {
+            line.add(buttons[i][j].getText());
+        }
+        if (hasLine(line)) {
+            System.out.println("Has forward diagonal line!" + line.get(0));
+            return true;
+        }
         return false;
     }
 
     private boolean hasLine(ArrayList<String> array) {
-        if(array.contains(" ")){
+        if (array.contains(" ")) {
             return false;
         }
-        
+
         for (String i : array) {
             if (!i.equals(array.get(0))) {
                 return false;
