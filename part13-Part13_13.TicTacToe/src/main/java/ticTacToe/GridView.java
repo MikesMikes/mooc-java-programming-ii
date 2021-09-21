@@ -59,7 +59,10 @@ public class GridView {
 
         return layout;
     }
-
+    /**
+     * 
+     * @return Button obj with onClicked event
+     */
     public Button createButton() {
         Button button = new Button(" ");
         button.setFont(Font.font("Monospaced", 40));
@@ -102,12 +105,7 @@ public class GridView {
         return false;
     }
 
-    /**
-     * Add 3 vertical nodes to a list and check if all the same
-     *
-     * @param String[3][3]
-     * @return boolean if there's a line
-     */
+
     private boolean hasVerticalLine() {
         ArrayList<String> line = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
