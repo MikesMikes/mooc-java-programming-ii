@@ -35,10 +35,10 @@ public class PartiesApplication extends Application {
             allParties.get(party).entrySet().stream().forEach(pair -> {
                 oneParty.getData().add(new XYChart.Data(pair.getKey(), pair.getValue()));
             });
-            
+
             lineChart.getData().add(oneParty);
         });
-        
+
         Scene view = new Scene(lineChart);
         stage.setScene(view);
         stage.show();
