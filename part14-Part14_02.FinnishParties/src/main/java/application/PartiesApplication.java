@@ -18,7 +18,7 @@ public class PartiesApplication extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         NumberAxis xAxis = new NumberAxis(1968, 2008, 4);
-        NumberAxis yAxis = new NumberAxis();
+        NumberAxis yAxis = new NumberAxis(0, 30, 5);
 
         xAxis.setLabel("Year");
         yAxis.setLabel("Relative support(%)");
