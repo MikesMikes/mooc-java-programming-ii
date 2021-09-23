@@ -24,6 +24,7 @@ public class PartiesApplication extends Application {
         yAxis.setLabel("Relative support(%)");
 
         LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);
+        lineChart.setTitle("Relative support of the parties");
 
         final Map<String, Map<Integer, Double>> allParties = createMap();
 
